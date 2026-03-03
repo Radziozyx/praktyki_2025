@@ -1,0 +1,37 @@
+import { test, expect } from '@playwright/test';
+
+test('Tabela laduje sie poprawnie', async ({ page }) => {
+  await page.goto('https://qaplayground.dev/apps/dynamic-table/');
+
+  await expect(page.locator('table')).toBeVisible();
+})
+
+test('Znajdz spidermana', async ({ page }) => {
+  await page.goto('https://qaplayground.dev/apps/dynamic-table/')
+
+  const superhero = page.locator('table tbody tr', { hasText: 'Spider-Man' });
+
+  await expect(superhero).toHaveCount(1);
+
+  await expect(superhero).toContainText('Peter Parker');
+
+})
+
+
+test("Should remove all tags", async ({ page }) => {
+  await page.goto("https://qaplayground.dev/apps/tags-input-box/");
+
+  await expect(
+    page.getByRole("heading", { name: "Tags" })
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: "Remove All" }).click();
+
+  await expect(
+    page.locator(".details p span")
+  ).toHaveText("10");
+
+  await expect(
+    page.locator(".content li")
+  ).toHaveCount(0);
+});
