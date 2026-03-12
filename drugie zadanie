@@ -1,0 +1,35 @@
+test('Nowa karta', async ({ page }) => {
+
+  await page.goto('https://qaplayground.dev/apps/new-tab/');
+
+  const button = page.locator('a#newPage');
+
+  const [newPage] = await Promise.all([
+    page.waitForEvent('popup'),
+    button.click()
+  ]);
+
+  await expect(
+    newPage.locator('h1')
+  ).toHaveText('New Page');
+  
+});
+
+test('Popup', async ({ page }) => {
+
+  await page.goto('https://qaplayground.dev/apps/popup/');
+
+  const openPopup = page.locator('#open-popup');
+
+  const [popup] = await Promise.all([
+    page.waitForEvent('popup'),
+    openPopup.click()
+  ]);
+
+  await popup.locator('button:has-text("Submit")').click();
+
+  await expect(
+    page.locator('#result')
+  ).toHaveText('Popup button clicked');
+
+});
