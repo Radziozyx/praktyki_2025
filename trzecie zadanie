@@ -1,0 +1,33 @@
+import { test, expect } from '@playwright/test';
+
+const BASE_URL = 'https://qa.heathrowexpress.com/';
+const EMAIL = 'lolradzio@gmail.com';
+const PASSWORD = 'Test1234.';
+
+test.describe('TESTY', () => {
+
+  test('Logowanie', async ({ page }) => {
+    await page.goto(BASE_URL);
+ 
+    await page.click('text=Login'); 
+    await page.fill('input[type="email"]', EMAIL);
+    await page.fill('input[type="password"]', PASSWORD);
+    await page.click('button:has-text("Login")');
+ 
+    await expect(page.locator('text=Logout')).toBeVisible();
+  });
+
+  test('Wylogowanie', async ({ page }) => {
+    await page.goto(BASE_URL);
+
+    
+    await page.click('text=Login');
+    await page.fill('input[type="email"]', EMAIL);
+    await page.fill('input[type="password"]', PASSWORD);
+    await page.click('button:has-text("Login")');
+    await expect(page.locator('text=Logout')).toBeVisible();
+    await page.click('text=Logout');
+    await expect(page.locator('text=Login')).toBeVisible();
+  });
+
+});
