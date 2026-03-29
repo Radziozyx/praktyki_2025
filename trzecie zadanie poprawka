@@ -1,0 +1,31 @@
+import { test, expect } from '@playwright/test';
+
+const BASE_URL = 'https://qa.heathrowexpress.com/';
+const EMAIL = 'lolradzio@gmail.com';
+const PASSWORD = 'Test1234.';
+
+
+
+test('Logowanie', async ({ page }) => {
+    await page.goto(BASE_URL); 
+    await page.getByRole('button', { name: 'Sign in / Register' }).click();
+    await page.fill('#username', EMAIL);
+    await page.fill('#password', PASSWORD);
+    await page.getByRole('button', { name: 'Sign in' }).click();
+ 
+});
+
+  test('Wylogowanie', async ({ page }) => {
+  await page.goto(BASE_URL);
+
+  await page.getByRole('button', { name: 'Sign in / Register' }).click();
+  await page.fill('#username', EMAIL);
+  await page.fill('#password', PASSWORD);
+  await page.getByRole('button', { name: 'Sign in' }).click();
+  await page.getByRole('button', { name: 'Sign in / Register' }).click();
+  const signOut = page.getByRole('menuitemradio', { name: 'Sign out' });
+  await expect(signOut).toBeVisible();
+  await signOut.click();
+
+  await expect(page.getByRole('button', { name: 'Sign in / Register' })).toBeVisible();
+});
