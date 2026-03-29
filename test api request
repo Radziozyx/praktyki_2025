@@ -1,0 +1,48 @@
+console.log("START");
+
+import axios, { AxiosError } from "axios";
+
+interface LoginResponse {
+  token?: string;
+  [key: string]: any;
+}
+
+async function testLogin(): Promise<void> {
+  try {
+    const response = await axios.post<LoginResponse>(
+      "https://nstest1.moray.frati.pl/institution-api/security/sign-in",
+      {
+        username: "admin",
+        password: "Akuku123!"
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json, text/plain, */*",
+          "Origin": "https://nstest1.moray.frati.pl",
+          "Referer": "https://nstest1.moray.frati.pl/instytucje/app/authenticate?sessionExpired=true",
+          "Cookie": "systemId=nstest1"
+        },
+        withCredentials: true
+      }
+    );
+
+    console.log("succes");
+    console.log("Status:", response.status);
+    console.log("Data:", response.data);
+
+  } catch (error) {
+    const err = error as AxiosError;
+
+    console.log("error");
+
+    if (err.response) {
+      console.log("Status:", err.response.status);
+      console.log("Data:", err.response.data);
+    } else {
+      console.log(err.message);
+    }
+  }
+}
+
+testLogin();
