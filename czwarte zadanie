@@ -1,0 +1,23 @@
+import { test, expect } from '@playwright/test';
+
+const BASE_URL2 = 'https://nstest1.moray.frati.pl/instytucje/app/authenticate';
+const USERNAME2 = 'admin';
+const PASSWORD2 = 'Akuku123!';
+
+test('Logowanie2', async ({ page }) => {
+    await page.goto(BASE_URL2); 
+    await page.fill('#auth-input-username', USERNAME2);
+    await page.fill('#auth-input-password', PASSWORD2);
+    await page.click('#loginButton')
+});
+
+test('Wylogowanie2', async ({ page }) => {
+    await page.goto(BASE_URL2); 
+    await page.fill('#auth-input-username', USERNAME2);
+    await page.fill('#auth-input-password', PASSWORD2);
+    await page.click('#loginButton')
+
+const signOut2 = page.getByRole('button', { name: 'Wyloguj' });
+await expect(signOut2).toBeVisible();
+await signOut2.click();
+});
